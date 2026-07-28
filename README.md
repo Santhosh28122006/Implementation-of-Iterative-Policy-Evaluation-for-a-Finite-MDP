@@ -176,11 +176,10 @@ Iterative policy evaluation was implemented successfully using the Gymnasium Fro
 
 ## Inference
 
-```text
+
 The Policy Evaluation algorithm converged after several iterations and calculated the state-value function for all states in the FrozenLake environment. The computed values represent the expected discounted rewards obtained by following the given policy from each state.
 
-
-```
+The algorithm repeatedly applies the Bellman Expectation Equation until the value function converges. The resulting state-value function indicates the expected cumulative reward obtainable from each state, where states closer to the goal generally have higher values and states with lower chances of reaching the goal have lower values
 
 
 
