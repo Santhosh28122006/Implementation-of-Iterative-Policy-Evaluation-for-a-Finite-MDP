@@ -99,19 +99,56 @@ Where:
 ## Program
 
 ```python
+V = np.zeros(n_states)
+def policy_evaluation(env, policy, gamma=0.99, theta=1e-8):
+    V = np.zeros(env.observation_space.n)
+    iteration = 0
 
+    while True:
+        delta = 0
 
-# -------------------------------------------------
-# Policy Evaluation Function
-# -------------------------------------------------
+        # Loop through each state
+        for s in range(env.observation_space.n):
+            v = V[s]
+            new_v = 0
 
+            # Sum over all actions
+            for a, action_prob in enumerate(policy[s]):
 
-# -------------------------------------------------
-# Display Output
-# -------------------------------------------------
+                # Transition probabilities from state s taking action a
+                for prob, next_state, reward, done in env.P[s][a]:
+                    new_v += action_prob * prob * (
+                        reward + gamma * V[next_state] * (not done)
+                    )
 
-# Change the parameters and observe the results
+            # Maximum change
+            delta = max(delta, abs(v - new_v))
+            V[s] = new_v
 
+        iteration += 1
+
+        # Check convergence
+        if delta < theta:
+            break
+
+    return V, iteration
+    
+```
+```
+V, iterations = policy_evaluation(env, policy, gamma, theta)
+
+print("Name: Santhosh V")
+print("Register Number:212224230251 ")
+print("Number of iterations:", iterations)
+print("\nState-Value Function:")
+print(V)
+
+print("Name:Santhosh V")
+print("Register Number:212224230251")
+print("\nState-Value Function as 4x4 Grid:")
+print(np.round(V.reshape(4, 4), 4))
+
+env.close()
 ```
 
 ---
@@ -120,13 +157,15 @@ Where:
 
 ```text
 
-Number of Iterations: 
+Number of Iterations: 54
 
 State-Value Function as 4x4 Grid:
-
-
-
 ```
+
+<img width="723" height="463" alt="Screenshot 2026-07-28 160835" src="https://github.com/user-attachments/assets/1f03a023-34db-4b7a-a901-a47f5942066e" />
+
+
+
 ---
 
 ## Result
@@ -138,7 +177,7 @@ Iterative policy evaluation was implemented successfully using the Gymnasium Fro
 ## Inference
 
 ```text
-
+The Policy Evaluation algorithm converged after several iterations and calculated the state-value function for all states in the FrozenLake environment. The computed values represent the expected discounted rewards obtained by following the given policy from each state.
 
 
 ```
